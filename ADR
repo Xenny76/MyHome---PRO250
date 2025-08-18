@@ -1,0 +1,5 @@
+ADR
+Repo Name: MyHome - https://github.com/M-Zuber/MyHome
+Context: Update UI in ~3 weeks
+Other repos considered: https://github.com/gadjetboi/MyFreeMoneyTracker
+Decision - Good separation of code, good comments, and started without issue without needing to change or update anything
