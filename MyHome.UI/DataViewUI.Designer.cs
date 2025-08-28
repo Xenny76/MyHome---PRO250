@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            var dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            var dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            var dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            var dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            var dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            var dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.cmbIncomeCategories = new System.Windows.Forms.ComboBox();
             this.txtIncomeCategoryTotal = new System.Windows.Forms.TextBox();
             this.dtPick = new System.Windows.Forms.DateTimePicker();
@@ -61,46 +61,51 @@
             this.cmbIncomeCategories.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbIncomeCategories.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbIncomeCategories.FormattingEnabled = true;
-            this.cmbIncomeCategories.Location = new System.Drawing.Point(3, 171);
+            this.cmbIncomeCategories.Location = new System.Drawing.Point(4, 269);
+            this.cmbIncomeCategories.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbIncomeCategories.Name = "cmbIncomeCategories";
-            this.cmbIncomeCategories.Size = new System.Drawing.Size(130, 21);
+            this.cmbIncomeCategories.Size = new System.Drawing.Size(196, 28);
             this.cmbIncomeCategories.TabIndex = 2;
             // 
             // txtIncomeCategoryTotal
             // 
             this.txtIncomeCategoryTotal.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtIncomeCategoryTotal.Location = new System.Drawing.Point(3, 213);
+            this.txtIncomeCategoryTotal.Location = new System.Drawing.Point(4, 335);
+            this.txtIncomeCategoryTotal.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtIncomeCategoryTotal.Name = "txtIncomeCategoryTotal";
             this.txtIncomeCategoryTotal.ReadOnly = true;
-            this.txtIncomeCategoryTotal.Size = new System.Drawing.Size(130, 20);
+            this.txtIncomeCategoryTotal.Size = new System.Drawing.Size(196, 26);
             this.txtIncomeCategoryTotal.TabIndex = 3;
             // 
             // dtPick
             // 
             this.dtPick.CustomFormat = "MM/yyyy";
             this.dtPick.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtPick.Location = new System.Drawing.Point(12, 48);
+            this.dtPick.Location = new System.Drawing.Point(18, 74);
+            this.dtPick.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dtPick.Name = "dtPick";
             this.dtPick.ShowUpDown = true;
-            this.dtPick.Size = new System.Drawing.Size(107, 20);
+            this.dtPick.Size = new System.Drawing.Size(158, 26);
             this.dtPick.TabIndex = 0;
             this.dtPick.ValueChanged += new System.EventHandler(this.DtPick_ValueChanged);
             // 
             // lblPickDate
             // 
             this.lblPickDate.AutoSize = true;
-            this.lblPickDate.Location = new System.Drawing.Point(12, 26);
+            this.lblPickDate.Location = new System.Drawing.Point(18, 40);
+            this.lblPickDate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPickDate.Name = "lblPickDate";
-            this.lblPickDate.Size = new System.Drawing.Size(69, 13);
+            this.lblPickDate.Size = new System.Drawing.Size(100, 20);
             this.lblPickDate.TabIndex = 5;
             this.lblPickDate.Text = "Pick a month";
             // 
             // lblIncomeCatTotals
             // 
             this.lblIncomeCatTotals.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblIncomeCatTotals.Location = new System.Drawing.Point(3, 126);
+            this.lblIncomeCatTotals.Location = new System.Drawing.Point(4, 198);
+            this.lblIncomeCatTotals.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblIncomeCatTotals.Name = "lblIncomeCatTotals";
-            this.lblIncomeCatTotals.Size = new System.Drawing.Size(130, 42);
+            this.lblIncomeCatTotals.Size = new System.Drawing.Size(196, 66);
             this.lblIncomeCatTotals.TabIndex = 6;
             this.lblIncomeCatTotals.Text = "Choose an income category \r\nto view the total";
             // 
@@ -109,8 +114,9 @@
             this.panel1.Controls.Add(this.tableLayoutPanel2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(136, 351);
+            this.panel1.Size = new System.Drawing.Size(204, 540);
             this.panel1.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -124,7 +130,8 @@
             this.tableLayoutPanel2.Controls.Add(this.txtIncomeCategoryTotal, 0, 5);
             this.tableLayoutPanel2.Controls.Add(this.cmbIncomeCategories, 0, 4);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 93);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 143);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 6;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
@@ -133,25 +140,27 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(136, 258);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(204, 397);
             this.tableLayoutPanel2.TabIndex = 12;
             // 
             // lblExpenseCatTotals
             // 
             this.lblExpenseCatTotals.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblExpenseCatTotals.Location = new System.Drawing.Point(3, 0);
+            this.lblExpenseCatTotals.Location = new System.Drawing.Point(4, 0);
+            this.lblExpenseCatTotals.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblExpenseCatTotals.Name = "lblExpenseCatTotals";
-            this.lblExpenseCatTotals.Size = new System.Drawing.Size(130, 42);
+            this.lblExpenseCatTotals.Size = new System.Drawing.Size(196, 66);
             this.lblExpenseCatTotals.TabIndex = 1;
             this.lblExpenseCatTotals.Text = "Choose an expense category \r\nto view the total";
             // 
             // txtExpenseCategoryTotal
             // 
             this.txtExpenseCategoryTotal.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtExpenseCategoryTotal.Location = new System.Drawing.Point(3, 87);
+            this.txtExpenseCategoryTotal.Location = new System.Drawing.Point(4, 137);
+            this.txtExpenseCategoryTotal.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtExpenseCategoryTotal.Name = "txtExpenseCategoryTotal";
             this.txtExpenseCategoryTotal.ReadOnly = true;
-            this.txtExpenseCategoryTotal.Size = new System.Drawing.Size(130, 20);
+            this.txtExpenseCategoryTotal.Size = new System.Drawing.Size(196, 26);
             this.txtExpenseCategoryTotal.TabIndex = 10;
             // 
             // cmbExpenseCategories
@@ -159,9 +168,10 @@
             this.cmbExpenseCategories.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbExpenseCategories.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbExpenseCategories.FormattingEnabled = true;
-            this.cmbExpenseCategories.Location = new System.Drawing.Point(3, 45);
+            this.cmbExpenseCategories.Location = new System.Drawing.Point(4, 71);
+            this.cmbExpenseCategories.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbExpenseCategories.Name = "cmbExpenseCategories";
-            this.cmbExpenseCategories.Size = new System.Drawing.Size(130, 21);
+            this.cmbExpenseCategories.Size = new System.Drawing.Size(196, 28);
             this.cmbExpenseCategories.TabIndex = 1;
             // 
             // dgOut
@@ -186,7 +196,8 @@
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgOut.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgOut.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgOut.Location = new System.Drawing.Point(3, 23);
+            this.dgOut.Location = new System.Drawing.Point(4, 36);
+            this.dgOut.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dgOut.Name = "dgOut";
             this.dgOut.ReadOnly = true;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -197,7 +208,8 @@
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgOut.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.dgOut.Size = new System.Drawing.Size(206, 325);
+            this.dgOut.RowHeadersWidth = 62;
+            this.dgOut.Size = new System.Drawing.Size(310, 499);
             this.dgOut.TabIndex = 3;
             this.dgOut.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.DgOut_MouseDoubleClick);
             // 
@@ -223,7 +235,8 @@
             dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgIn.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgIn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgIn.Location = new System.Drawing.Point(215, 23);
+            this.dgIn.Location = new System.Drawing.Point(322, 36);
+            this.dgIn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dgIn.Name = "dgIn";
             this.dgIn.ReadOnly = true;
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -234,7 +247,8 @@
             dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgIn.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
-            this.dgIn.Size = new System.Drawing.Size(206, 325);
+            this.dgIn.RowHeadersWidth = 62;
+            this.dgIn.Size = new System.Drawing.Size(310, 499);
             this.dgIn.TabIndex = 4;
             this.dgIn.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.DgIn_MouseDoubleClick);
             // 
@@ -248,12 +262,13 @@
             this.tableLayoutPanel1.Controls.Add(this.dgIn, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.lblExpenseChart, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(136, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(204, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(424, 351);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(636, 540);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // lblIncomeChart
@@ -263,9 +278,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblIncomeChart.AutoSize = true;
             this.lblIncomeChart.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIncomeChart.Location = new System.Drawing.Point(215, 0);
+            this.lblIncomeChart.Location = new System.Drawing.Point(322, 0);
+            this.lblIncomeChart.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblIncomeChart.Name = "lblIncomeChart";
-            this.lblIncomeChart.Size = new System.Drawing.Size(206, 20);
+            this.lblIncomeChart.Size = new System.Drawing.Size(310, 31);
             this.lblIncomeChart.TabIndex = 3;
             this.lblIncomeChart.Text = "Income";
             this.lblIncomeChart.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -277,22 +293,24 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblExpenseChart.AutoSize = true;
             this.lblExpenseChart.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblExpenseChart.Location = new System.Drawing.Point(3, 0);
+            this.lblExpenseChart.Location = new System.Drawing.Point(4, 0);
+            this.lblExpenseChart.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblExpenseChart.Name = "lblExpenseChart";
-            this.lblExpenseChart.Size = new System.Drawing.Size(206, 20);
+            this.lblExpenseChart.Size = new System.Drawing.Size(310, 31);
             this.lblExpenseChart.TabIndex = 3;
             this.lblExpenseChart.Text = "Expenses";
             this.lblExpenseChart.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // DataViewUI
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(560, 351);
+            this.ClientSize = new System.Drawing.Size(840, 540);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.lblPickDate);
             this.Controls.Add(this.dtPick);
             this.Controls.Add(this.panel1);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "DataViewUI";
             this.Text = "Monthly Flow";
             this.Load += new System.EventHandler(this.DataViewUI_Load);

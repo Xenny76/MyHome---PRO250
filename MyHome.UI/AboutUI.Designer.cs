@@ -34,20 +34,23 @@
             // 
             // lblAbout
             // 
-            this.lblAbout.Location = new System.Drawing.Point(11, 9);
+            this.lblAbout.Location = new System.Drawing.Point(16, 14);
+            this.lblAbout.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblAbout.Name = "lblAbout";
             this.lblAbout.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.lblAbout.Size = new System.Drawing.Size(211, 137);
+            this.lblAbout.Size = new System.Drawing.Size(316, 300);
             this.lblAbout.TabIndex = 0;
             this.lblAbout.Text = "MyHome 2013\r\nDesigned and Written  by\r\nS. Amar\r\nY. Biton\r\nA. Gonen\r\nM. Packter\r\nM" +
-    ". Zuber\r\n\r\nUpdated by:\r\nM. Zuber";
+    ". Zuber\r\n\r\nUpdated by:\r\nM. Zuber\r\n\r\nUI Updated by:\r\nE. Andreason\r\nT. Cable\r\nD. R" +
+    "edford";
             this.lblAbout.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnOkay
             // 
-            this.btnOkay.Location = new System.Drawing.Point(84, 153);
+            this.btnOkay.Location = new System.Drawing.Point(126, 325);
+            this.btnOkay.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnOkay.Name = "btnOkay";
-            this.btnOkay.Size = new System.Drawing.Size(75, 23);
+            this.btnOkay.Size = new System.Drawing.Size(112, 35);
             this.btnOkay.TabIndex = 1;
             this.btnOkay.Text = "Okay";
             this.btnOkay.UseVisualStyleBackColor = true;
@@ -56,16 +59,18 @@
             // AboutUI
             // 
             this.AcceptButton = this.btnOkay;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(242, 188);
+            this.ClientSize = new System.Drawing.Size(363, 375);
             this.Controls.Add(this.btnOkay);
             this.Controls.Add(this.lblAbout);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AboutUI";
             this.Text = "About MyHome";
+            this.Load += new System.EventHandler(this.AboutUI_Load);
             this.ResumeLayout(false);
 
         }

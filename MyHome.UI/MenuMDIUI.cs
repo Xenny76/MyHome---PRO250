@@ -1,6 +1,9 @@
-﻿using MyHome.Services;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
+using MyHome.Services;
 
 namespace MyHome.UI
 {
@@ -50,6 +53,10 @@ namespace MyHome.UI
         /// </summary>
         public RecurringIncomeInput NewRecurringIncome { get; set; }
 
+        private Panel navigationPanel;
+        private Dictionary<string, ToolStripMenuItem> topMenuItems;
+
+
         /// <inheritdoc />
         /// <summary>
         /// Default ctor
@@ -57,7 +64,257 @@ namespace MyHome.UI
         public MenuMDIUI()
         {
             InitializeComponent();
+
+            this.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            this.BackColor = Color.FromArgb(45, 45, 48);
+            this.ForeColor = Color.White;
+            this.BackgroundImage = null;
+
+            menuStrip1.Renderer = new DarkRenderer();
+            statusStrip.Renderer = new DarkRenderer();
+
+            navigationPanel = new Panel
+            {
+                Dock = DockStyle.Top,
+                BackColor = Color.FromArgb(45, 45, 48),
+            };
+            this.Controls.Add(navigationPanel);
+            this.Controls.SetChildIndex(navigationPanel, 1);
+
+            InitializeMenus();
+
+            mainMenuToolStripMenuItem.Click += (s, e) => ShowMenu("Main");
+            frameWorkToolStripMenuItem.Click += (s, e) => ShowMenu("Framework");
+            visualizationToolStripMenuItem.Click += (s, e) => ShowMenu("Visualization");
+
+            topMenuItems = new Dictionary<string, ToolStripMenuItem>
+            {
+                { "Main", mainMenuToolStripMenuItem },
+                { "Framework", frameWorkToolStripMenuItem },
+                { "Visualization", visualizationToolStripMenuItem }
+            };
+
+            ShowMenu("Main");
+            //AdjustMenuHeight(menuPages["Main"]);
         }
+
+        private Dictionary<string, FlowLayoutPanel> menuPages = new Dictionary<string, FlowLayoutPanel>();
+
+        private void InitializeMenus()
+        {
+            // Main menu
+            var mainFlow = CreateMenuFlow(new (string, EventHandler)[]
+            {
+        ("View Details", ViewDetailToolStripMenuItem_Click),
+        ("Single Income", NewIncomeToolStripMenuItem_Click),
+        ("Single Expense", NewExcpenceToolStripMenuItem_Click),
+        ("Recurring Income", RecurringIncomeToolStripMenuItem_Click),
+        ("Recurring Expense", RecurringExpenseToolStripMenuItem_Click),
+        ("Graph", CategoryGraphToolStripMenuItem_Click),
+        ("Pie Chart", CategoryPieChartToolStripMenuItem_Click),
+        ("Payment Method Chart", MethodPieChartToolStripMenuItem_Click)
+            });
+            menuPages["Main"] = mainFlow;
+            navigationPanel.Controls.Add(mainFlow);
+
+            // Framework menu
+            var frameworkFlow = CreateMenuFlow(new (string, EventHandler)[]
+            {
+        ("Expense Category", ExCatToolStripMenuItem_Click),
+        ("Income Category", IncomeCatToolStripMenuItem_Click),
+        ("Payment Category", PaymentCatToolStripMenuItem_Click)
+            }, visible: false);
+            menuPages["Framework"] = frameworkFlow;
+            navigationPanel.Controls.Add(frameworkFlow);
+
+            // Visualization menu
+            var visualizationFlow = CreateMenuFlow(new (string, EventHandler)[]
+            {
+        ("Category Graph", CategoryGraphToolStripMenuItem_Click),
+        ("Multiple Category Graph", MethodGraphToolStripMenuItem_Click),
+        ("Category Pie Chart", CategoryPieChartToolStripMenuItem_Click),
+        ("Method Pie Chart", MethodPieChartToolStripMenuItem_Click)
+            }, visible: false);
+            menuPages["Visualization"] = visualizationFlow;
+            navigationPanel.Controls.Add(visualizationFlow);
+        }
+
+        private FlowLayoutPanel CreateMenuFlow((string Text, EventHandler Click)[] buttons, bool visible = true)
+        {
+            var flow = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                AutoScroll = true,
+                FlowDirection = FlowDirection.LeftToRight,
+                WrapContents = true,
+                BackColor = navigationPanel.BackColor,
+                Padding = new Padding(10),
+                Visible = visible
+            };
+
+            foreach (var (text, click) in buttons)
+                flow.Controls.Add(CreateMenuButton(text, click));
+
+            return flow;
+        }
+
+        private void AdjustMenuHeight(FlowLayoutPanel flow)
+        {
+            int maxHeight = 0;
+            foreach (Control c in flow.Controls)
+            {
+                if (c.Height > maxHeight)
+                    maxHeight = c.Height;
+            }
+
+            int minHeight = 50;
+            navigationPanel.Height = Math.Max(minHeight, maxHeight + flow.Padding.Vertical + 10);
+        }
+
+        private string activeMenu = null;
+        private void ShowMenu(string menuName)
+        {
+            // If clicking the same menu, toggle visibility
+            if (activeMenu == menuName)
+            {
+                var page = menuPages[menuName];
+                page.Visible = !page.Visible;
+
+                if (page.Visible)
+                {
+                    AdjustMenuHeight(page);
+                    navigationPanel.Visible = true;
+                }
+                else
+                {
+                    navigationPanel.Height = 0;
+                    navigationPanel.Visible = false;
+                    activeMenu = null;
+                }
+
+                UpdateMenuHighlights(); // update button state
+                return;
+            }
+
+            // Otherwise switch menus
+            foreach (var kvp in menuPages)
+                kvp.Value.Visible = kvp.Key == menuName;
+
+            navigationPanel.Visible = true;
+            AdjustMenuHeight(menuPages[menuName]);
+            activeMenu = menuName;
+
+            UpdateMenuHighlights(); // highlight correct button
+        }
+
+        private void UpdateMenuHighlights()
+        {
+            foreach (var kvp in topMenuItems)
+            {
+                var item = kvp.Value;
+                if (kvp.Key == activeMenu)
+                {
+                    item.BackColor = Color.FromArgb(70, 70, 70); // highlight
+                    item.ForeColor = Color.White;
+                    item.Font = new Font(item.Font, FontStyle.Bold);
+                }
+                else
+                {
+                    item.BackColor = Color.FromArgb(45, 45, 48); // normal
+                    item.ForeColor = Color.Gainsboro;
+                    item.Font = new Font(item.Font, FontStyle.Regular);
+                }
+            }
+        }
+
+        private Button CreateMenuButton(string text, EventHandler click)
+        {
+            var btn = new Button
+            {
+                Text = text,
+                BackColor = Color.FromArgb(35, 35, 38),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+            };
+            btn.FlatAppearance.BorderSize = 0;
+            btn.Click += click;
+
+            using (Graphics g = this.CreateGraphics())
+            {
+                SizeF textSize = g.MeasureString(text, this.Font);
+                btn.Size = new Size((int)textSize.Width + 20, (int)textSize.Height + 20);
+            }
+
+            return btn;
+        }
+
+
+
+
+
+
+        class DarkRenderer : ToolStripProfessionalRenderer
+        {
+            private readonly Dictionary<ToolStripMenuItem, bool> activeItems;
+
+            public DarkRenderer(Dictionary<string, ToolStripMenuItem> topMenuItems)
+            {
+                // Track items externally
+                activeItems = topMenuItems.ToDictionary(kvp => kvp.Value, kvp => false);
+            }
+
+            public DarkRenderer() : base(new DarkColorTable()) { }
+
+            protected override void OnRenderToolStripBackground(ToolStripRenderEventArgs e)
+            {
+                e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(28, 28, 28)), e.AffectedBounds);
+            }
+
+            protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
+            {
+                // Hover Color
+                if (e.Item.Selected)
+                {
+                    using (SolidBrush b = new SolidBrush(Color.FromArgb(50, 50, 55)))
+                    {
+                        e.Graphics.FillRectangle(b, e.Item.ContentRectangle);
+                    }
+                }
+            }
+
+            // Text Color
+            protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
+            {
+                e.TextColor = Color.White;
+                base.OnRenderItemText(e);
+            }
+
+
+            protected override void OnRenderSeparator(ToolStripSeparatorRenderEventArgs e)
+            {
+                e.Graphics.FillRectangle(Brushes.Gray, e.Item.Bounds.X, e.Item.Bounds.Y + e.Item.Bounds.Height / 2, e.Item.Bounds.Width, 1);
+            }
+
+            // Submenu Arrow Color
+            protected override void OnRenderArrow(ToolStripArrowRenderEventArgs e)
+            {
+                e.ArrowColor = Color.White;
+                base.OnRenderArrow(e);
+            }
+        }
+
+        class DarkColorTable : ProfessionalColorTable
+        {
+            public override Color ToolStripDropDownBackground => Color.FromArgb(35, 35, 38);
+            public override Color MenuItemSelected => Color.FromArgb(50, 50, 55);
+            public override Color MenuItemBorder => Color.Transparent;
+            public override Color ImageMarginGradientBegin => Color.FromArgb(28, 28, 28);
+            public override Color ImageMarginGradientEnd => Color.FromArgb(28, 28, 28);
+            public override Color ImageMarginGradientMiddle => Color.FromArgb(28, 28, 28);
+            public override Color SeparatorDark => Color.Gray;
+            public override Color SeparatorLight => Color.Gray;
+        }
+
 
         /// <summary>
         /// Closes the form -on close FormClosing will activate and check for changes in
@@ -68,16 +325,6 @@ namespace MyHome.UI
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
-        }
-
-        /// <summary>
-        /// Shows or hides the tool bar
-        /// </summary>
-        /// <param name="sender">Standard sender object</param>
-        /// <param name="e">Standard event object</param>
-        private void ShowToolBarToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            toolStrip.Visible = showToolBarToolStripMenuItem.Checked;
         }
 
         /// <summary>
@@ -121,7 +368,7 @@ namespace MyHome.UI
         private void ViewDetailToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MdiChilrenSum++;
-            var childData = new DataViewUI {MdiParent = this};
+            var childData = new DataViewUI { MdiParent = this };
             childData.Show();
             childData.FormClosed += MdiChildClosed;
         }
@@ -137,10 +384,10 @@ namespace MyHome.UI
             if (NewIncome == null)
             {
                 MdiChilrenSum++;
-                NewIncome = new InputINUI {MdiParent = this};
+                NewIncome = new InputINUI { MdiParent = this };
                 NewIncome.Show();
                 NewIncome.FormClosed += MdiChildClosed;
-                NewIncome.FormClosed += NewIncomeClose; 
+                NewIncome.FormClosed += NewIncomeClose;
             }
             // Forces the form to the front
             else
@@ -160,7 +407,7 @@ namespace MyHome.UI
             if (NewExpense == null)
             {
                 MdiChilrenSum++;
-                NewExpense = new InputOutUI {MdiParent = this};
+                NewExpense = new InputOutUI { MdiParent = this };
                 NewExpense.Show();
                 NewExpense.FormClosed += MdiChildClosed;
                 NewExpense.FormClosed += NewExpenseClose;
@@ -183,7 +430,7 @@ namespace MyHome.UI
             if (NewRecurringExpense == null)
             {
                 MdiChilrenSum++;
-                var childData = new RecurringExpenseInput {MdiParent = this};
+                var childData = new RecurringExpenseInput { MdiParent = this };
                 childData.Show();
                 childData.FormClosed += MdiChildClosed;
                 childData.FormClosed += NewRecurringExpenseClose;
@@ -206,7 +453,7 @@ namespace MyHome.UI
             if (NewRecurringIncome == null)
             {
                 MdiChilrenSum++;
-                var childData = new RecurringIncomeInput {MdiParent = this};
+                var childData = new RecurringIncomeInput { MdiParent = this };
                 childData.Show();
                 childData.FormClosed += MdiChildClosed;
                 childData.FormClosed += NewRecurringIncomeClose;
@@ -236,7 +483,7 @@ namespace MyHome.UI
         private void CategoryPieChartToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MdiChilrenSum++;
-            var mcuNew = new MonthChartUI(DateTime.Now.Date) {MdiParent = this};
+            var mcuNew = new MonthChartUI(DateTime.Now.Date) { MdiParent = this };
             mcuNew.Show();
             mcuNew.FormClosed += MdiChildClosed;
         }
@@ -244,7 +491,7 @@ namespace MyHome.UI
         private void MethodPieChartToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MdiChilrenSum++;
-            var mcuNew = new DataPerPaymentMethod(DateTime.Now.Date) {MdiParent = this};
+            var mcuNew = new DataPerPaymentMethod(DateTime.Now.Date) { MdiParent = this };
             mcuNew.Show();
             mcuNew.FormClosed += MdiChildClosed;
         }
@@ -252,7 +499,7 @@ namespace MyHome.UI
         private void MethodGraphToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MdiChilrenSum++;
-            var mcuNew = new MultipleCategoriesCompare {MdiParent = this};
+            var mcuNew = new MultipleCategoriesCompare { MdiParent = this };
             mcuNew.Show();
             mcuNew.FormClosed += MdiChildClosed;
         }
@@ -268,7 +515,7 @@ namespace MyHome.UI
             if (ExpCatForm == null)
             {
                 MdiChilrenSum++;
-                ExpCatForm = new ViewCategoriesUI(CategoryType.Expense) {MdiParent = this};
+                ExpCatForm = new ViewCategoriesUI(CategoryType.Expense) { MdiParent = this };
                 ExpCatForm.Show();
                 ExpCatForm.FormClosed += MdiChildClosed;
                 ExpCatForm.FormClosed += ExpCatClose;
@@ -291,7 +538,7 @@ namespace MyHome.UI
             if (IncCatForm == null)
             {
                 MdiChilrenSum++;
-                IncCatForm = new ViewCategoriesUI(CategoryType.Income) {MdiParent = this};
+                IncCatForm = new ViewCategoriesUI(CategoryType.Income) { MdiParent = this };
                 IncCatForm.Show();
                 IncCatForm.FormClosed += MdiChildClosed;
                 IncCatForm.FormClosed += IncCatClose;
@@ -314,7 +561,7 @@ namespace MyHome.UI
             if (PaymentCatForm == null)
             {
                 MdiChilrenSum++;
-                PaymentCatForm = new ViewCategoriesUI(CategoryType.PaymentMethod) {MdiParent = this};
+                PaymentCatForm = new ViewCategoriesUI(CategoryType.PaymentMethod) { MdiParent = this };
                 PaymentCatForm.Show();
                 PaymentCatForm.FormClosed += MdiChildClosed;
                 PaymentCatForm.FormClosed += PaymentCatClose;
@@ -334,7 +581,7 @@ namespace MyHome.UI
         private void CategoryGraphToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MdiChilrenSum++;
-            var childData = new DataChartUI {MdiParent = this};
+            var childData = new DataChartUI { MdiParent = this };
             childData.Show();
             childData.FormClosed += MdiChildClosed;
         }
@@ -528,6 +775,12 @@ namespace MyHome.UI
         {
             MdiChilrenSum--;
             tslblMdiChildNumber.Text = MdiChilrenSum.ToString();
+        }
+
+        private void mainMenuToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            navigationPanel.Visible = !navigationPanel.Visible;
+            navigationPanel.BringToFront();
         }
     }
 }

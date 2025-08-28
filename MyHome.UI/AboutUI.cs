@@ -27,5 +27,10 @@ namespace MyHome.UI
         {
             Close();
         }
+
+        private void AboutUI_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
