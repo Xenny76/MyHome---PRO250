@@ -401,6 +401,7 @@ namespace MyHome.UI
                     break;
 
                 case Label lbl:
+                    lbl.Font = new Font(lbl.Font.FontFamily, 9, lbl.Font.Style);
                     lbl.ForeColor = Color.White;
                     break;
 
