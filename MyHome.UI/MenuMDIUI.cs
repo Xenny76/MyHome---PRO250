@@ -70,9 +70,6 @@ namespace MyHome.UI
             this.ForeColor = Color.White;
             this.BackgroundImage = null;
 
-            menuStrip1.Renderer = new DarkRenderer();
-            statusStrip.Renderer = new DarkRenderer();
-
             navigationPanel = new Panel
             {
                 Dock = DockStyle.Top,
@@ -93,6 +90,10 @@ namespace MyHome.UI
                 { "Framework", frameWorkToolStripMenuItem },
                 { "Visualization", visualizationToolStripMenuItem }
             };
+
+            //menuStrip1.Renderer = new DarkRenderer();
+            statusStrip.Renderer = new DarkRenderer();
+            menuStrip1.Renderer = new DarkRenderer(topMenuItems);
 
             ShowMenu("Main");
             //AdjustMenuHeight(menuPages["Main"]);
@@ -212,19 +213,25 @@ namespace MyHome.UI
             foreach (var kvp in topMenuItems)
             {
                 var item = kvp.Value;
-                if (kvp.Key == activeMenu)
+                bool isActive = kvp.Key == activeMenu;
+
+                // Tell renderer
+                (menuStrip1.Renderer as DarkRenderer)?.SetActive(item, isActive);
+
+                // Text colors
+                if (isActive)
                 {
-                    item.BackColor = Color.FromArgb(70, 70, 70); // highlight
                     item.ForeColor = Color.White;
                     item.Font = new Font(item.Font, FontStyle.Bold);
                 }
                 else
                 {
-                    item.BackColor = Color.FromArgb(45, 45, 48); // normal
                     item.ForeColor = Color.Gainsboro;
                     item.Font = new Font(item.Font, FontStyle.Regular);
                 }
             }
+
+            menuStrip1.Invalidate(); // force redraw
         }
 
         private Button CreateMenuButton(string text, EventHandler click)
@@ -248,18 +255,13 @@ namespace MyHome.UI
             return btn;
         }
 
-
-
-
-
-
         class DarkRenderer : ToolStripProfessionalRenderer
         {
             private readonly Dictionary<ToolStripMenuItem, bool> activeItems;
 
             public DarkRenderer(Dictionary<string, ToolStripMenuItem> topMenuItems)
+    : base(new DarkColorTable())
             {
-                // Track items externally
                 activeItems = topMenuItems.ToDictionary(kvp => kvp.Value, kvp => false);
             }
 
@@ -270,16 +272,36 @@ namespace MyHome.UI
                 e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(28, 28, 28)), e.AffectedBounds);
             }
 
+            public void SetActive(ToolStripMenuItem item, bool active)
+            {
+                if (activeItems.ContainsKey(item))
+                    activeItems[item] = active;
+            }
+
             protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
             {
-                // Hover Color
-                if (e.Item.Selected)
+                var item = e.Item as ToolStripMenuItem;
+
+                // Active highlight (persistent)
+                if (item != null && activeItems.TryGetValue(item, out bool isActive) && isActive)
                 {
-                    using (SolidBrush b = new SolidBrush(Color.FromArgb(50, 50, 55)))
-                    {
+                    using (SolidBrush b = new SolidBrush(Color.FromArgb(70, 70, 70)))
                         e.Graphics.FillRectangle(b, e.Item.ContentRectangle);
-                    }
                 }
+                // Hover highlight
+                else if (e.Item.Selected)
+                {
+                    using (SolidBrush b = new SolidBrush(Color.FromArgb(60, 60, 60)))
+                        e.Graphics.FillRectangle(b, e.Item.ContentRectangle);
+                }
+                // Default background
+                else
+                {
+                    using (SolidBrush b = new SolidBrush(Color.FromArgb(45, 45, 48)))
+                        e.Graphics.FillRectangle(b, e.Item.ContentRectangle);
+                }
+
+                base.OnRenderMenuItemBackground(e);
             }
 
             // Text Color
@@ -305,16 +327,95 @@ namespace MyHome.UI
 
         class DarkColorTable : ProfessionalColorTable
         {
-            public override Color ToolStripDropDownBackground => Color.FromArgb(35, 35, 38);
-            public override Color MenuItemSelected => Color.FromArgb(50, 50, 55);
-            public override Color MenuItemBorder => Color.Transparent;
-            public override Color ImageMarginGradientBegin => Color.FromArgb(28, 28, 28);
-            public override Color ImageMarginGradientEnd => Color.FromArgb(28, 28, 28);
-            public override Color ImageMarginGradientMiddle => Color.FromArgb(28, 28, 28);
-            public override Color SeparatorDark => Color.Gray;
-            public override Color SeparatorLight => Color.Gray;
+            public override Color MenuItemSelected => Color.FromArgb(60, 60, 60); // hover
+            public override Color MenuItemSelectedGradientBegin => Color.FromArgb(60, 60, 60);
+            public override Color MenuItemSelectedGradientEnd => Color.FromArgb(60, 60, 60);
+
+            public override Color MenuItemBorder => Color.FromArgb(60, 60, 60);
+
+            public override Color MenuStripGradientBegin => Color.FromArgb(28, 28, 28);
+            public override Color MenuStripGradientEnd => Color.FromArgb(28, 28, 28);
+
+            public override Color ToolStripDropDownBackground => Color.FromArgb(45, 45, 48);
+            public override Color ImageMarginGradientBegin => Color.FromArgb(45, 45, 48);
+            public override Color ImageMarginGradientMiddle => Color.FromArgb(45, 45, 48);
+            public override Color ImageMarginGradientEnd => Color.FromArgb(45, 45, 48);
         }
 
+        private void MenuMDIUI_MdiChildActivate(object sender, EventArgs e)
+        {
+            tslblMdiChildNumber.Text = MdiChilrenSum.ToString();
+
+            if (ActiveMdiChild != null)
+                ApplyDarkTheme(ActiveMdiChild);
+        }
+
+        private void ApplyDarkTheme(Form form)
+        {
+            form.BackColor = Color.FromArgb(45, 45, 48);
+            form.ForeColor = Color.White;
+            form.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+
+            foreach (Control ctrl in form.Controls)
+                ApplyDarkThemeToControl(ctrl);
+        }
+
+        private void ApplyDarkThemeToControl(Control ctrl)
+        {
+            ctrl.BackColor = Color.FromArgb(45, 45, 48);
+            ctrl.ForeColor = Color.White;
+
+            switch (ctrl)
+            {
+                case Button btn:
+                    btn.FlatStyle = FlatStyle.Flat;
+                    btn.FlatAppearance.BorderSize = 0;
+                    btn.BackColor = Color.FromArgb(35, 35, 38);
+                    btn.ForeColor = Color.White;
+                    break;
+
+                case TextBox txt:
+                    txt.BorderStyle = BorderStyle.FixedSingle;
+                    txt.BackColor = Color.FromArgb(30, 30, 30);
+                    txt.ForeColor = Color.White;
+                    break;
+
+                case ComboBox cb:
+                    cb.FlatStyle = FlatStyle.Flat;
+                    cb.BackColor = Color.FromArgb(30, 30, 30);
+                    cb.ForeColor = Color.White;
+                    break;
+
+                case DataGridView dgv:
+                    dgv.BackgroundColor = Color.FromArgb(45, 45, 48);
+                    dgv.ForeColor = Color.White;
+                    dgv.EnableHeadersVisualStyles = false;
+                    dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(35, 35, 38);
+                    dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+                    dgv.RowHeadersDefaultCellStyle.BackColor = Color.FromArgb(35, 35, 38);
+                    dgv.RowHeadersDefaultCellStyle.ForeColor = Color.White;
+                    dgv.DefaultCellStyle.BackColor = Color.FromArgb(30, 30, 30);
+                    dgv.DefaultCellStyle.ForeColor = Color.White;
+                    dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(70, 70, 70);
+                    dgv.DefaultCellStyle.SelectionForeColor = Color.White;
+                    break;
+
+                case Label lbl:
+                    lbl.ForeColor = Color.White;
+                    break;
+
+                case GroupBox gb:
+                    gb.ForeColor = Color.White;
+                    break;
+
+                case Panel pnl:
+                    pnl.BackColor = Color.FromArgb(45, 45, 48);
+                    break;
+            }
+
+            foreach (Control child in ctrl.Controls)
+                ApplyDarkThemeToControl(child);
+        }
 
         /// <summary>
         /// Closes the form -on close FormClosing will activate and check for changes in
@@ -690,10 +791,10 @@ namespace MyHome.UI
         /// </summary>
         /// <param name="sender">Standard sender object</param>
         /// <param name="e">Standard event object</param>
-        private void MenuMDIUI_MdiChildActivate(object sender, EventArgs e)
-        {
-            tslblMdiChildNumber.Text = MdiChilrenSum.ToString();
-        }
+        //private void MenuMDIUI_MdiChildActivate(object sender, EventArgs e)
+        //{
+        //    tslblMdiChildNumber.Text = MdiChilrenSum.ToString();
+        //}
 
         /// <summary>
         /// When the new income form is closed, sets the main forms property to null
