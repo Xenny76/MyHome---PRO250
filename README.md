@@ -3,8 +3,6 @@
 MyHome
 ==========
 
-This simple desktop program
-
 A simple desktop program to manage finances. Now it functions using a dark theme and simplifying some of the UI to make it look more modern.
 The dropdown menu has been updated. instead of a dropdown it will switch between the same dropdown items but on a horizontal bar instead. This feature is similar to how Word works.
 Mainly worked in the MenuMDIUI.cs to change the UI and the core finnance functionality has not been changed.
@@ -12,12 +10,9 @@ Mainly worked in the MenuMDIUI.cs to change the UI and the core finnance functio
 
 
 
-
-Original ReadMe below
+Continuing Original ReadMe below
 
 Home finance management
-
-
 
 ## For Developers
 
